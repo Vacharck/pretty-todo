@@ -6,7 +6,7 @@ import { useSort } from "./hooks/useSort";
 import { useContext } from "react";
 
 export function TodoList(){
-    const {todo} = useContext(TodoContext)
+    const {todo,setTodo} = useContext(TodoContext)
 
     const {filterTodo} = useFilter()
     const {sortTodo} = useSort()
@@ -14,6 +14,14 @@ export function TodoList(){
     const sortedTodo = sortTodo({todo})
     const filteredTodo = filterTodo({todo: sortedTodo})
 
+    const setSelf = (id:string)=>{
+        return (newTodo?:TodoT)=>{
+            if(newTodo) 
+                return  setTodo(todo.map(todo => todo.id === id ? newTodo : todo))
+            else 
+                return setTodo(todo.filter(todo => todo.id !== id))
+        }
+    }
     return (
             <ul className="flex flex-wrap place-content-evenly
             gap-5 border-5 border-sky-400 p-5
@@ -34,6 +42,7 @@ export function TodoList(){
                         description={description}
                         isCompleted={isCompleted}
                         date={date}
+                        setSelf={setSelf(id)}
                     />))}
             </ul> 
     )
